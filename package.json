@@ -9,6 +9,7 @@
     "test": "cross-env APP_ENV=test NODE_ENV=test mocha -r ts-node/register",
     "start": "APP_ENV=production NODE_ENV=production ts-node ./src/index.ts",
     "build": "rimraf ./build && tsc",
+    "heroku-postbuild": "npm install && npm run build",
     "migration:create": "knex migrate:make",
     "migration:run": "knex migrate:latest --knexfile knexfile.ts",
     "lint": "gts lint",
