@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "cross-env APP_ENV=development NODE_ENV=development nodemon ./src/index.ts",
     "test": "cross-env APP_ENV=test NODE_ENV=test mocha -r ts-node/register",
-    "start": "APP_ENV=production NODE_ENV=production ts-node ./src/index.ts",
+    "start": "APP_ENV=production NODE_ENV=production node ./build/src/index.ts",
     "build": "rimraf ./build && tsc",
     "migration:create": "knex migrate:make",
+    "postinstall": "tsc",
     "migration:run": "knex migrate:latest --knexfile knexfile.ts",
     "lint": "gts lint",
     "clean": "gts clean",
