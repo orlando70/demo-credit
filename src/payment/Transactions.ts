@@ -65,57 +65,6 @@ export type PaystackEventType =
 export default class Transactions extends Requester {
   path = '/transaction';
 
-  /**
-   * This checks if the authorizationCode is a valid one or if it can be charged
-   * The input data would be in an object
-   *
-   * @param email string
-   * @param amount string
-   * @param authorizationCode string
-   */
-
-  async chargeAuthorization(data: TransactionAuthorizationData) {
-    const url = `${this.path}/charge_authorization`;
-
-    const result = await this.makeRequest({
-      method: 'POST',
-      data,
-      url,
-    });
-
-    return this.resolveResponse<TransactionAuthCodeCharge>(result);
-  }
-
-  /**
-   * This checks if the authorizationCode is a valid one or if it can be charged
-   * The input data would be in an object
-   *
-   * @param email string
-   * @param amount string
-   * @param authorizationCode string
-   */
-
-  async checkAuthorization(data: TransactionAuthorizationData) {
-    const url = `${this.path}/check_authorization`;
-
-    const result = await this.makeRequest({
-      method: 'POST',
-      data,
-      url,
-    });
-
-    return this.resolveResponse(result);
-  }
-
-  /**
-   * This submits pin after the charge has been created succesfully
-   * The input data would be in an object
-   *
-   * @param email string
-   * @param amount string
-   * @param metadata json Optional
-   * @example { "email": "customer@email.com", "amount": "20000", metadata: { transactionId: "bla" } }
-   */
   async initialize(data: TransactionInitData) {
     const url = `${this.path}/initialize`;
 

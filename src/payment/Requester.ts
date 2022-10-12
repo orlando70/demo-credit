@@ -1,12 +1,11 @@
-import axios, { Method } from 'axios';
+import axios, {Method} from 'axios';
 import camelcaseKeys from 'camelcase-keys';
-// eslint-disable-next-line import/no-named-as-default
-import { ServiceError } from '../lib/errors';
+import {ServiceError} from '../lib/errors';
 import generalLogger from '../lib/logger';
 
 const instance = axios.create();
 
-type RequestParams = { url: string; method: Method; data: any };
+type RequestParams = {url: string; method: Method; data: any};
 interface PaystackResponse {
   status: boolean; // Only true if the details provided could be processed and no error occured while processing
   message: string; // Explains why status is false... Entirely informational. Please only log this but do not use for your checks
@@ -25,10 +24,10 @@ export default class Requester {
   // eslint-disable-next-line class-methods-use-this
   resolveResponse<T extends Record<string, any>>(result: PaystackResponse) {
     if (!result.status) throw new Error('invalid response');
-    return { ...result.data, message: result.message } as T;
+    return {...result.data, message: result.message} as T;
   }
 
-  async makeRequest({ url, method, data }: RequestParams) {
+  async makeRequest({url, method, data}: RequestParams) {
     try {
       const fullUrl = `https://${this.baseUrl}${url}`;
       const result = await instance.request({
@@ -36,14 +35,18 @@ export default class Requester {
         url: fullUrl,
         method,
         headers: {
-          'Content-Type': this.contentType !== undefined ? this.contentType : 'application/json',
-          ...(this.key ? { Authorization: `Bearer ${this.key}` } : {}),
+          'Content-Type':
+            this.contentType !== undefined
+              ? this.contentType
+              : 'application/json',
+          ...(this.key ? {Authorization: `Bearer ${this.key}`} : {}),
         } as any,
       });
 
-      return camelcaseKeys(result.data, { deep: true });
+      return camelcaseKeys(result.data, {deep: true});
     } catch (err: any) {
-      if (err.isAxiosError && err.response) return Promise.reject(new ServiceError(err.response.data.message));
+      if (err.isAxiosError && err.response)
+        return Promise.reject(new ServiceError(err.response.data.message));
       generalLogger.error(err);
       return Promise.reject(err);
     }

@@ -1,36 +1,42 @@
-import { createLogger, format, transports } from 'winston';
-import { consoleFormat } from 'winston-console-format';
-import config, { AppEnvironmentEnum } from '../../config';
+import {createLogger, format, transports} from 'winston';
+import {consoleFormat} from 'winston-console-format';
+import config, {AppEnvironmentEnum} from '../../config';
 
-const { TEST, DEVELOPMENT } = AppEnvironmentEnum;
+const {TEST, DEVELOPMENT} = AppEnvironmentEnum;
 
 const consoleTransportOptions = [TEST, DEVELOPMENT].includes(config.app.env)
   ? {
-    handleExceptions: true,
-    format: format.combine(
-      format.colorize({ all: true }),
-      format.padLevels(),
-      consoleFormat({
-        showMeta: true,
-        metaStrip: ['timestamp'],
-        inspectOptions: {
-          depth: Infinity,
-          colors: true,
-          maxArrayLength: Infinity,
-          breakLength: 120,
-          compact: Infinity,
-        },
-      }),
-    ),
-  }
-  : { handleExceptions: true };
+      handleExceptions: true,
+      format: format.combine(
+        format.colorize({all: true}),
+        format.padLevels(),
+        consoleFormat({
+          showMeta: true,
+          metaStrip: ['timestamp'],
+          inspectOptions: {
+            depth: Infinity,
+            colors: true,
+            maxArrayLength: Infinity,
+            breakLength: 120,
+            compact: Infinity,
+          },
+        })
+      ),
+    }
+  : {handleExceptions: true};
 
-const createComponentLogger = (component: string) => createLogger({
-  level: 'debug',
-  format: format.combine(format.timestamp(), format.errors({ stack: true }), format.splat(), format.json()),
-  defaultMeta: { component },
-  transports: [new transports.Console(consoleTransportOptions)],
-});
+const createComponentLogger = (component: string) =>
+  createLogger({
+    level: 'debug',
+    format: format.combine(
+      format.timestamp(),
+      format.errors({stack: true}),
+      format.splat(),
+      format.json()
+    ),
+    defaultMeta: {component},
+    transports: [new transports.Console(consoleTransportOptions)],
+  });
 
 export const generalLogger = createComponentLogger('GENERAL');
 export const routesLogger = createComponentLogger('ROUTES');

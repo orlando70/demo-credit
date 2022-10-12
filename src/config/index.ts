@@ -34,11 +34,10 @@ type Config = {
   paystack: {
     secretKey: string;
     baseUrl: string;
-    preAuthorizationFee: number;
   };
 };
 
-const isTestEnvironment = process.env.APP_ENV === AppEnvironmentEnum.TEST;
+const isTestEnvironment = process.env.NODE_ENV === AppEnvironmentEnum.TEST;
 
 const config: Config = {
   env: {
@@ -55,15 +54,18 @@ const config: Config = {
   db: {
     host: process.env.DB_HOST || 'localhost',
     port: +(process.env.DB_PORT || 3306),
-    database: isTestEnvironment ? process.env.TEST_DB_DATABASE! : process.env.DB_DATABASE!,
+    database: isTestEnvironment
+      ? process.env.TEST_DB_DATABASE!
+      : process.env.DB_DATABASE!,
     user: isTestEnvironment ? process.env.TEST_DB_USER! : process.env.DB_USER!,
-    password: isTestEnvironment ? process.env.TEST_DB_PASSWORD! : process.env.DB_PASSWORD!,
+    password: isTestEnvironment
+      ? process.env.TEST_DB_PASSWORD!
+      : process.env.DB_PASSWORD!,
   },
   paystack: {
     secretKey: process.env.PAYSTACK_SECRET_KEY!,
     baseUrl: process.env.PAYSTACK_API_BASE_URL!,
-    preAuthorizationFee: 1000,
-  }
+  },
 };
 
 const validateConfig = () => {
@@ -76,8 +78,9 @@ const validateConfig = () => {
     });
   });
   if (missingKeys.length) {
-    global.console.error(`The following configuration keys are not set: ${missingKeys.join(', ')}`);
-    process.exit(1);
+    global.console.error(
+      `The following configuration keys are not set: ${missingKeys.join(', ')}`
+    );
   }
 };
 

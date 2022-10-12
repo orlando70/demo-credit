@@ -1,5 +1,5 @@
 import Requester from './Requester';
-import { IReciepientResponse, TransferReciepientData } from './types';
+import {IReciepientResponse, TransferReciepientData} from './types';
 
 export default class TransferReciepient extends Requester {
   path = '/transferrecipient';

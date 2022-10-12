@@ -6,18 +6,20 @@ import {
   ValidationError,
   AuthenticationError,
   AuthorizationError,
-} from './index';
+} from '../../lib/errors';
+import { errorLogger } from '../../lib/logger';
+import config, { AppEnvironmentEnum } from '../../config';
 
 const logError = (err: any, req: Request) => {
-    console.log(
-        {url: req.originalUrl,
-        method: req.method,
-        body: req.body,
-        stack: err.stack,}
-    );
+  errorLogger.error(err.message, {
+    url: req.originalUrl,
+    method: req.method,
+    body: req.body,
+    stack: err.stack,
+  });
 };
 
-export default (err: GenericError, req: Request, res: Response, next: NextFunction): void | Response => {
+const errorHandler = (err: GenericError, req: Request, res: Response, next: NextFunction): void | Response => {
   if (res.headersSent) {
     return next(err);
   }
@@ -29,6 +31,7 @@ export default (err: GenericError, req: Request, res: Response, next: NextFuncti
       // if (config.env.isTest) logError(err, req);
       return res.status(err.statusCode).send({
         status: 'error',
+        errCode: err.statusCode,
         message: err.message,
       });
     case ValidationError.statusCode:
@@ -43,6 +46,13 @@ export default (err: GenericError, req: Request, res: Response, next: NextFuncti
       return res.status(500).send({
         status: 'error',
         message: 'an error occurred',
+        ...([AppEnvironmentEnum.LOCAL, AppEnvironmentEnum.DEVELOPMENT, AppEnvironmentEnum.STAGING].includes(
+          config.app.env,
+        )
+          ? { stack: err.stack }
+          : {}),
       });
   }
 };
+
+export default errorHandler;

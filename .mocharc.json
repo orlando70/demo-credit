@@ -4,6 +4,7 @@
     "package": "./package.json",
     "parallel": false,
     "recursive": true,
+    "require": "test/setup.ts",
     "slow": 200,
     "spec": ["test/**/*.test.ts"],
     "timeout": 500000

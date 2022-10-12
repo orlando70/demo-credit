@@ -1,7 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import Requester from './Requester';
 import TransferRecipient from './TransferRecipient';
-import { IInitiateTransferResponse, InitiateTransferData } from './types';
+import {
+  Ifinalize,
+  IFinalizeTransferResponse,
+  IInitiateTransferResponse,
+  InitiateTransferData,
+} from './types';
 
 export default class Transfer extends Requester {
   path = '/transfer';
@@ -36,5 +41,17 @@ export default class Transfer extends Requester {
     });
 
     return this.resolveResponse<IInitiateTransferResponse>(result);
+  }
+
+  async finalize(data: Ifinalize) {
+    const url = `${this.path}/finalize_transfer`;
+
+    const result = await this.makeRequest({
+      method: 'POST',
+      data,
+      url,
+    });
+
+    return this.resolveResponse<IFinalizeTransferResponse>(result);
   }
 }
