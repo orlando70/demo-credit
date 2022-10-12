@@ -2,7 +2,8 @@
   "name": "democredit",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index",
+  "typings": "dist/index",
   "scripts": {
     "dev": "cross-env APP_ENV=development NODE_ENV=development nodemon ./src/index.ts",
     "test": "cross-env APP_ENV=test NODE_ENV=test mocha -r ts-node/register",
