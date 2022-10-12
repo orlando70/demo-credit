@@ -51,13 +51,4 @@ describe('Wallet-UNIT', () => {
         assert.equal(updatedWallet2?.balance, 300);
 
     })
-
-    it("should deduct balance from user1's wallet", async () => {
-
-        const a = await WalletRepo.updateBalance(wallet1, 1000);
-
-        
-
-
-    })
 })

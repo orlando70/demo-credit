@@ -52,3 +52,8 @@ export class ValidateTransactionRequest {
     @IsObject()
     data: Object;
 }
+
+export class GetUserRequest {
+    @IsNumber()
+    userId: number;
+}
