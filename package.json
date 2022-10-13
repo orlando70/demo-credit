@@ -61,8 +61,5 @@
     "ts-node": "^10.9.1",
     "winston": "^3.8.2",
     "winston-console-format": "^1.0.8"
-  },
-  "engines": {
-    "node": "16.14.0"
   }
 }
