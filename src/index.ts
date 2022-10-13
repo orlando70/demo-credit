@@ -6,7 +6,6 @@ import routes from './routes/index';
 import config from './config';
 import helmet from 'helmet';
 import errorHandler from './lib/errors/errorHandler';
-import morgan from 'morgan';
 import {migrate} from './database/connection';
 import generalLogger from './lib/logger';
 
@@ -17,7 +16,6 @@ app.use(cors());
 app.use(helmet());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(morgan('dev'));
 app.use(routes);
 app.use(errorHandler);
 

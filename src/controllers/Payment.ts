@@ -37,6 +37,7 @@ export default class PaymentController {
       res.send({
         success: true,
         data: result,
+        message: 'withrawal is successful'
       });
     } catch (error) {
       next(error)
