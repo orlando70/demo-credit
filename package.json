@@ -10,7 +10,6 @@
     "start": "ts-node ./src/index.ts",
     "build": "rimraf ./build && tsc",
     "migration:create": "knex migrate:make",
-    "postinstall": "tsc",
     "migration:run": "knex migrate:latest --knexfile knexfile.ts",
     "lint": "gts lint",
     "clean": "gts clean",
