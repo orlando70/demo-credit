@@ -48,6 +48,7 @@ export interface InitiateTransferData {
 export interface Ifinalize {
   transferCode: string;
   otp?: string;
+  metadata: Record<string, any>;
 }
 
 export interface IDetails {
@@ -129,6 +130,7 @@ export interface PaystackTransferEventData {
       bankName: string;
     };
   };
+  metadata: Record<string, any>;
 }
 
 export interface PaystackEvent<T> {

@@ -1,6 +1,8 @@
 import camelCaseKeys from 'camelcase-keys';
 import TransactionRepo from '../../database/repositories/TransactionsRepo';
+import UserRepo from '../../database/repositories/UserRepo';
 import WalletRepo, {Wallet} from '../../database/repositories/WalletRepo';
+import { ServiceError } from '../../lib/errors';
 import {TransactionStatusEnum} from '../../utils/enums';
 import {
   PaystackChargeEventData,
@@ -72,11 +74,18 @@ export class WebhookHandler {
     response: PaystackEvent<PaystackTransferEventData>
   ) {
     const {data} = response;
-    console.log('TRANSFER RESPONSE: ', response);
+
     if (response.event !== PaystackEventEnum.TRANSFER_SUCCESS) {
-      await Promise.resolve(); // Placeholder
-      // TODO get transactionId from metadata and update transaction status
-      // await TransactionRepo.updateTransactionById(response.data.)
+      await TransactionRepo.updateTransactionById(data.metadata.transactionId, {
+        status: TransactionStatusEnum.SUCCESS
+      })
+
+      const user = await UserRepo.getUserByEmail(data.recipient.email);
+      if (!user) throw new ServiceError('Error fetching user');
+
+      const wallet = (await WalletRepo.getWalletByUser(user))!;
+
+      await WalletRepo.updateBalance(wallet, -data.amount);
     }
   }
 }

@@ -70,9 +70,8 @@ export default wrapServiceAction({
 
     const finalizeTransfer = await paystack.transfer.finalize({
       transferCode: initializeTransfer.transferCode,
+      metadata: {transactionId: transaction.id}
     });
-
-    await WalletRepo.updateBalance(wallet, -amount);
 
     return { finalizeTransfer };
   }
